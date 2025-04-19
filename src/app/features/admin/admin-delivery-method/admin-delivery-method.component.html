@@ -1,0 +1,75 @@
+<div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Delivery Methods</h1>
+        <button mat-raised-button color="primary" routerLink="/admin/delivery-methods/new">
+            <mat-icon>add</mat-icon> Add New Delivery Method
+        </button>
+    </div>
+
+    <mat-card>
+        <mat-card-content>
+            <div *ngIf="loading" class="py-8 text-center">
+                <p>Loading delivery methods...</p>
+            </div>
+
+            <div *ngIf="!loading && dataSource.data.length === 0" class="py-8 text-center">
+                <p>No delivery methods found.</p>
+                <button mat-raised-button color="primary" routerLink="/admin/delivery-methods/new" class="mt-4">
+                    <mat-icon>add</mat-icon> Add New Delivery Method
+                </button>
+            </div>
+
+            <table *ngIf="!loading && dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="w-full">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let method">{{ method.id }}</td>
+                </ng-container>
+
+                <!-- Short Name Column -->
+                <ng-container matColumnDef="shortName">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let method">{{ method.shortName }}</td>
+                </ng-container>
+
+                <!-- Delivery Time Column -->
+                <ng-container matColumnDef="deliveryTime">
+                    <th mat-header-cell *matHeaderCellDef>Delivery Time</th>
+                    <td mat-cell *matCellDef="let method">{{ method.deliveryTime }}</td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let method">{{ method.description }}</td>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef>Price</th>
+                    <td mat-cell *matCellDef="let method">{{ method.price | currency }}</td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let method">
+                        <div class="flex gap-2">
+                            <button matTooltip="Edit" mat-icon-button color="primary"
+                                [routerLink]="['/admin/delivery-methods/edit', method.id]">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button matTooltip="Delete" mat-icon-button color="warn"
+                                (click)="confirmDeliveryMethodDeletion(method.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

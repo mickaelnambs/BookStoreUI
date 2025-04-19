@@ -1,0 +1,35 @@
+<mat-card class="w-full max-w-md mx-auto mt-16 sm:mt-24 p-6 sm:p-8 bg-white rounded-xl shadow-lg">
+    <div class="flex justify-center mb-6">
+        <div class="bg-blue-100 rounded-full p-3">
+            <mat-icon class="text-blue-600 text-3xl">lock</mat-icon>
+        </div>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Welcome Back</h1>
+            <p class="text-gray-600 mt-2">Sign in to access your account</p>
+        </div>
+
+        <mat-form-field appearance="outline" class="w-full mb-4" floatLabel="always">
+            <mat-label>Email address</mat-label>
+            <input formControlName="email" type="email" placeholder="name@example.com" matInput />
+            <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full mb-6" floatLabel="always">
+            <mat-label>Password</mat-label>
+            <input formControlName="password" type="password" placeholder="Password" matInput />
+            <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" class="w-full py-2 text-lg font-medium">
+            Sign in
+        </button>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?
+            <a routerLink="/account/register" class="text-blue-600 hover:text-blue-800 font-medium">Create account</a>
+        </div>
+    </form>
+</mat-card>

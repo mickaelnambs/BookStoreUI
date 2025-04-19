@@ -1,0 +1,94 @@
+@if (order) {
+    <mat-card class="bg-white py-4 sm:py-8 shadow-md max-w-screen-lg mx-auto px-4">
+        <div class="w-full">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0">
+                <h2 class="text-xl sm:text-2xl text-center font-semibold">Order summary for order #{{order.id}}</h2>
+                <button (click)="onReturnClick()" mat-stroked-button>{{buttonText}}</button>
+            </div>
+
+            <div class="mt-4 sm:mt-8 py-3 border-t border-gray-200 flex flex-col md:flex-row md:gap-16">
+                <div class="space-y-2 mb-4 md:mb-0">
+                    <h4 class="text-lg font-semibold">Billing and delivery information</h4>
+                    <dl>
+                        <dt class="font-medium">Shipping address</dt>
+                        <dd class="mt-1 font-light">{{order.shippingAddress | address }}</dd>
+                    </dl>
+                    <dl>
+                        <dt class="font-medium">Payment info</dt>
+                        <dd class="mt-1 font-light">{{ order.paymentSummary | paymentCard }}</dd>
+                    </dl>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="text-lg font-semibold">Order details</h4>
+                    <dl>
+                        <dt class="font-medium">Email address</dt>
+                        <dd class="mt-1 font-light break-words">{{order.buyerEmail}}</dd>
+                    </dl>
+                    <dl>
+                        <dt class="font-medium">Order status</dt>
+                        <dd class="mt-1 font-light">{{order.status}}</dd>
+                    </dl>
+                    <dl>
+                        <dt class="font-medium">Order date</dt>
+                        <dd class="mt-1 font-light">{{order.orderDate | date: 'medium'}}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-4 overflow-x-auto">
+                <div class="border-y border-gray-200 min-w-full">
+                    <table class="w-full text-center">
+                        <tbody class="divide-y divide-gray-200">
+                            @for (item of order.orderItems; track item.bookId) {
+                                <tr>
+                                    <td class="py-4">
+                                        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                                            <img src="{{item.coverImageUrl}}" alt="product image"
+                                                class="w-10 h-10">
+                                            <span class="text-sm sm:text-base text-center sm:text-left">{{item.bookTitle}}</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 sm:p-4 text-sm sm:text-base">x{{item.quantity}}</td>
+                                    <td class="p-2 sm:p-4 text-right text-sm sm:text-base">{{item.price | currency}}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="space-y-4 rounded-lg border-y border-gray-200 p-4 bg-white mt-4">
+                <p class="text-lg sm:text-xl font-semibold">Order summary</p>
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <dl class="flex items-center justify-between gap-2 sm:gap-4">
+                            <dt class="font-medium text-gray-500 text-sm sm:text-base">Subtotal</dt>
+                            <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                                {{order.subtotal | currency}}
+                            </dd>
+                        </dl>
+                        <dl class="flex items-center justify-between gap-2 sm:gap-4">
+                            <dt class="font-medium text-gray-500 text-sm sm:text-base">Discount</dt>
+                            <dd class="font-medium text-green-500 text-sm sm:text-base">
+                                -{{order.discount | currency }}
+                            </dd>
+                        </dl>
+                        <dl class="flex items-center justify-between gap-2 sm:gap-4">
+                            <dt class="font-medium text-gray-500 text-sm sm:text-base">Delivery fee</dt>
+                            <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                                {{order.shippingPrice| currency}}
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <dl class="flex items-center justify-between gap-2 sm:gap-4 border-t border-gray-200 pt-2">
+                        <dt class="font-medium text-gray-500 text-sm sm:text-base">Total</dt>
+                        <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                            {{order.total | currency}}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+}

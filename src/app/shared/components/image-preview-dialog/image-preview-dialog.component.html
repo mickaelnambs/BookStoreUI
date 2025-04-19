@@ -1,0 +1,12 @@
+<div class="image-preview-container">
+    <div class="preview-header">
+        <h2>{{ data.imageTitle }}</h2>
+        <button mat-icon-button (click)="dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="image-container">
+        <img [src]="data.imageUrl" [alt]="data.imageTitle" class="preview-image"
+            onerror="this.src='assets/images/placeholder.png'">
+    </div>
+</div>

@@ -1,0 +1,78 @@
+@if (book) {
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-screen-2xl px-4 mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="flex items-center justify-center p-8 bg-gray-100">
+                    <img class="w-full max-w-md object-contain rounded shadow-md" src="{{book.coverImageUrl}}" alt="{{book.title}}">
+                </div>
+
+                <div class="p-8 flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h1 class="text-3xl font-semibold text-gray-900">{{book.title}}</h1>
+                            <p class="text-lg text-blue-600 mt-2">by {{book.author}}</p>
+                            <p>You have {{quantityInCart}} of this item in your cart</p>
+                        </div>
+                        <button
+                            [disabled]="isInWishlist"
+                            mat-icon-button color="warn"
+                            aria-label="Add to wishlist"
+                            (click)="addToWishlist()"
+                        >
+                            <mat-icon>{{isInWishlist ? 'favorite' : 'favorite_border'}}</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-4">
+                        <p class="text-3xl font-extrabold text-gray-900">
+                            {{book.price | currency}}
+                        </p>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium" *ngIf="book.quantityInStock > 0">
+                            In Stock ({{book.quantityInStock}})
+                        </span>
+                    </div>
+
+                    <div class="flex gap-4 mt-6">
+                        <button
+                            [disabled]="quantity === quantityInCart"
+                            (click)="updateCart()"
+                            mat-flat-button
+                            color="primary"
+                            class="match-input-height"
+                        >
+                            <mat-icon>shopping_cart</mat-icon>
+                            {{getButtonText()}}
+                        </button>
+
+                        <mat-form-field appearance="outline" class="flex">
+                            <mat-label>Quantity</mat-label>
+                            <input matInput min="0" [(ngModel)]="quantity" type="number">
+                        </mat-form-field>
+                    </div>
+
+                    <mat-divider class="my-6"></mat-divider>
+
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                        <div>
+                            <p class="text-gray-500">Publisher</p>
+                            <p class="font-medium">{{book.publisher}}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">Genre</p>
+                            <p class="font-medium">{{book.genre}}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">ISBN</p>
+                            <p class="font-medium">{{book.isbn}}</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3">Description</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        {{book.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,93 @@
+<header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
+    <div class="flex flex-wrap items-center justify-between max-w-screen-2xl mx-auto relative">
+        <div class="flex items-center cursor-pointer" routerLink="/">
+            <img routerLink="/" src="/images/logo.png" alt="app logo" class="max-h-16">
+        </div>
+
+        <button mat-icon-button class="md:hidden" (click)="toggleMobileMenu()">
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2">
+            <nav class="flex gap-6 uppercase text-lg font-medium">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="hover:text-blue-700">Home</a>
+                <a routerLink="/shop" routerLinkActive="active" class="hover:text-blue-700">Shop</a>
+                <a *appIsAdmin routerLink="/admin" routerLinkActive="active" class="hover:text-blue-700">Admin</a>
+            </nav>
+        </div>
+
+        <div class="hidden md:flex items-center gap-3">
+            <div class="relative inline-block cursor-pointer" routerLink="/cart" routerLinkActive="active">
+                <mat-icon>shopping_cart</mat-icon>
+                @if (cartService.itemCount()! > 0) {
+                    <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {{cartService.itemCount()}}
+                    </span>
+                }
+            </div>
+            @if (accountService.currentUser()) {
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <mat-icon>arrow_drop_down</mat-icon>
+                    <span>{{accountService.currentUser()?.email}}</span>
+                </button>
+            } @else {
+                <button routerLink="/account/login" mat-stroked-button>Login</button>
+                <button routerLink="/account/register" mat-stroked-button>Register</button>
+            }
+        </div>
+    </div>
+</header>
+
+<div class="md:hidden fixed top-20 left-0 right-0 bg-white shadow-md z-40 transition-transform duration-300"
+     [ngClass]="{'translate-y-0': mobileMenuOpen, '-translate-y-full': !mobileMenuOpen}">
+    <div class="container mx-auto px-4 py-3">
+        <nav class="flex flex-col items-center gap-3 uppercase text-lg">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="hover:text-blue-700 py-2">Home</a>
+            <a routerLink="/shop" routerLinkActive="active" class="hover:text-blue-700 py-2">Shop</a>
+        </nav>
+
+        <div class="flex justify-center items-center gap-3 mt-3 pb-3">
+            <div class="relative inline-block cursor-pointer" routerLink="/cart" routerLinkActive="active">
+                <mat-icon>shopping_cart</mat-icon>
+                @if (cartService.itemCount()! > 0) {
+                    <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {{cartService.itemCount()}}
+                    </span>
+                }
+            </div>
+            @if (accountService.currentUser()) {
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <mat-icon>arrow_drop_down</mat-icon>
+                    <span>{{accountService.currentUser()?.email}}</span>
+                </button>
+            } @else {
+                <button routerLink="/account/login" mat-stroked-button>Login</button>
+                <button routerLink="/account/register" mat-stroked-button>Register</button>
+            }
+        </div>
+    </div>
+</div>
+
+@if (busyService.loading) {
+    <mat-progress-bar mode="indeterminate" class="fixed top-20 z-50"></mat-progress-bar>
+}
+
+<mat-menu #menu="matMenu" class="px-5">
+    <button mat-menu-item class="px-3" routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        My cart
+    </button>
+    <button mat-menu-item class="px-3" routerLink="/wishlist">
+        <mat-icon>favorite</mat-icon>
+        My wishlist
+    </button>
+    <button mat-menu-item class="px-3" routerLink="/orders">
+        <mat-icon>history</mat-icon>
+        My orders
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item class="px-3" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
+</mat-menu>

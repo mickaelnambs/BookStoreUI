@@ -1,0 +1,55 @@
+<section *ngIf="signalrService.orderSignal() as order" class="bg-white py-8 sm:py-12 md:py-16">
+    <div class="mx-auto max-w-2xl px-4">
+        <h2 class="font-semibold text-xl sm:text-2xl mb-2 text-center sm:text-left">Thanks for your fake order!</h2>
+        <p class="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base text-center sm:text-left">
+            Your order <span class="font-medium">#{{order.id}}</span> will never be processed as this is a fake shop.
+            We will not notify you once your order has not shipped.
+        </p>
+        <div class="space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-4 sm:p-6 mb-6 sm:mb-8">
+            <dl class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-1">
+                <dt class="font-normal text-gray-500 text-sm sm:text-base">Date</dt>
+                <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                    {{order.orderDate | date: 'medium'}}
+                </dd>
+            </dl>
+            <dl class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-1">
+                <dt class="font-normal text-gray-500 text-sm sm:text-base">Payment method</dt>
+                <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                    {{order.paymentSummary | paymentCard}}
+                </dd>
+            </dl>
+            <dl class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-1">
+                <dt class="font-normal text-gray-500 text-sm sm:text-base">Address</dt>
+                <dd class="font-medium text-gray-900 text-sm sm:text-base max-w-full sm:max-w-xs break-words">
+                    {{order.shippingAddress | address}}
+                </dd>
+            </dl>
+            <dl class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-1">
+                <dt class="font-normal text-gray-500 text-sm sm:text-base">Amount</dt>
+                <dd class="font-medium text-gray-900 text-sm sm:text-base">
+                    {{order.total | currency}}
+                </dd>
+            </dl>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-4 sm:space-x-4">
+            <button routerLink="/orders/{{order.id}}" mat-flat-button class="w-full sm:w-auto">View your order</button>
+            <button routerLink="/shop" mat-stroked-button class="w-full sm:w-auto">Continue shopping</button>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="!signalrService.orderSignal()" class="bg-white py-8 sm:py-12 md:py-16">
+    <div class="mx-auto max-w-2xl px-4">
+        <h2 class="font-semibold text-xl sm:text-2xl mb-2 text-center">Order processing... please wait</h2>
+        <div class="space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-4 sm:p-6 mb-6 sm:mb-8">
+            <div class="flex flex-col justify-center items-center py-4">
+                <mat-spinner diameter="30"></mat-spinner>
+                <p class="text-lg sm:text-xl mt-4 mb-2">Loading order...</p>
+                <span class="text-center text-sm sm:text-base">Your payment has been received. We are creating the order</span>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <button routerLink="/shop" mat-stroked-button class="w-full sm:w-auto">Continue shopping</button>
+        </div>
+    </div>
+</section>

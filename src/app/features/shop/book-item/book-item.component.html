@@ -1,0 +1,31 @@
+@if (book) {
+    <mat-card
+        routerLink="/shop/{{book.id}}"
+        class="book-card h-full flex flex-col overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg"
+    >
+        <div class="relative flex-shrink-0 overflow-hidden">
+            <img src="{{book.coverImageUrl}}" alt="{{book.title}}"
+                 class="w-full h-52 object-cover transition-transform duration-500 hover:scale-105">
+        </div>
+
+        <mat-card-content class="p-4 flex-grow">
+            <h2 class="text-sm font-semibold uppercase line-clamp-2 min-h-[2.5rem]">{{book.title}}</h2>
+            <p class="text-xs text-gray-600 mt-1">by {{book.author}}</p>
+            <p class="font-medium text-blue-600 mt-2">{{book.price | currency}}</p>
+        </mat-card-content>
+
+        <mat-card-actions
+            class="px-4 pb-4 mt-auto"
+            (click)="$event.stopPropagation()"
+        >
+            <button
+                mat-flat-button color="primary"
+                class="w-full text-xs"
+                (click)="cartService.addItemToCart(book)"
+            >
+                <mat-icon class="text-sm mr-1">add_shopping_cart</mat-icon>
+                Add to Cart
+            </button>
+        </mat-card-actions>
+    </mat-card>
+}

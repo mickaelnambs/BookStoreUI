@@ -1,0 +1,52 @@
+<div class="container mx-auto pt-5 px-4">
+    @if (!busyService.loading && wishlistBooks.length > 0) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            @for (book of wishlistBooks; track book.id) {
+                <mat-card class="h-full flex flex-col overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
+                    <div class="relative flex-shrink-0 overflow-hidden">
+                        <img [src]="book.coverImageUrl" [alt]="book.title"
+                            class="w-full h-52 object-cover transition-transform duration-500 hover:scale-105"
+                            [routerLink]="['/shop', book.id]">
+                    </div>
+
+                    <mat-card-content class="p-4 flex-grow">
+                        <h2 class="text-sm font-semibold uppercase line-clamp-2 min-h-[2.5rem]"
+                            [routerLink]="['/shop', book.id]">
+                            {{book.title}}
+                        </h2>
+                        <p class="text-xs text-gray-600 mt-1">by {{book.author}}</p>
+                        <p class="font-medium text-blue-600 mt-2">{{book.price | currency}}</p>
+                    </mat-card-content>
+
+                    <mat-card-actions class="px-4 pb-4 mt-auto grid grid-cols-2 gap-2">
+                        <button
+                            mat-stroked-button
+                            color="warn"
+                            class="text-xs"
+                            (click)="removeFromWishlist(book.id)"
+                        >
+                            <mat-icon class="text-sm mr-1">delete</mat-icon>
+                            Remove
+                        </button>
+                        <button
+                            mat-flat-button
+                            color="primary"
+                            class="text-xs"
+                            (click)="addToCart(book)"
+                        >
+                            <mat-icon class="text-sm mr-1">add_shopping_cart</mat-icon>
+                            Add to Cart
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            }
+        </div>
+    } @else if (!busyService.loading && wishlistBooks.length === 0) {
+        <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
+            <mat-icon class="text-gray-400 text-6xl mb-4">favorite_border</mat-icon>
+            <h2 class="text-xl font-medium text-gray-700 mb-2">Your wishlist is empty</h2>
+            <p class="text-gray-500 mb-6 max-w-md">Books you add to your wishlist will appear here</p>
+            <button mat-flat-button color="primary" routerLink="/shop">Browse Books</button>
+        </div>
+    }
+</div>

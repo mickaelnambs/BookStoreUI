@@ -1,0 +1,70 @@
+<div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">User Management</h1>
+    </div>
+
+    <mat-card>
+        <mat-card-content>
+            <div *ngIf="!loading && dataSource.data.length === 0" class="py-8 text-center">
+                <p>No users found.</p>
+            </div>
+
+            <table *ngIf="!loading && dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="w-full">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let user">{{ user.id | slice:0:8 }}...</td>
+                </ng-container>
+
+                <!-- Display Name Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef>First name</th>
+                    <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+                </ng-container>
+
+                <!-- Username Column -->
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef>Last name</th>
+                    <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+                </ng-container>
+
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let user">
+                        <span [ngClass]="{'text-green-600': !isUserLocked(user), 'text-red-600': isUserLocked(user)}"
+                            class="px-2 py-1 rounded-full text-xs font-medium">
+                            {{ getUserStatus(user) }}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let user">
+                        <div class="flex gap-2">
+                            <button *ngIf="!isUserLocked(user)" matTooltip="Lock User" mat-icon-button color="warn"
+                                (click)="lockUser(user.id)">
+                                <mat-icon>lock</mat-icon>
+                            </button>
+                            <button *ngIf="isUserLocked(user)" matTooltip="Unlock User" mat-icon-button color="primary"
+                                (click)="unlockUser(user.id)">
+                                <mat-icon>lock_open</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

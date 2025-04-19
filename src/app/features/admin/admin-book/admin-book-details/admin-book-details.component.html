@@ -1,0 +1,89 @@
+<div class="p-6 max-w-4xl mx-auto">
+    <!-- Book details -->
+    <div *ngIf="book && !loading && !error">
+        <div class="flex justify-between items-start mb-6">
+            <h1 class="text-2xl font-bold">Book Details</h1>
+            <div class="flex gap-2">
+                <button mat-raised-button color="primary" [routerLink]="['/admin/books/edit', book.id]">
+                    <mat-icon>edit</mat-icon> Edit
+                </button>
+                <button mat-raised-button color="warn" (click)="confirmBookDeletion(book.id)">
+                    <mat-icon>delete</mat-icon> Delete
+                </button>
+                <button mat-raised-button routerLink="/admin">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-1">
+                <mat-card>
+                    <mat-card-content class="flex justify-center p-4">
+                        <img [src]="book.coverImageUrl" [alt]="book.title" class="max-h-80 object-contain rounded shadow-md">
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="mt-4">
+                    <mat-card-content>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold">ID:</span>
+                            <span>{{book.id}}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold">Price:</span>
+                            <span class="text-green-600 font-bold">${{book.price.toFixed(2)}}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold">In Stock:</span>
+                            <span
+                                [ngClass]="{'text-red-500': book.quantityInStock < 5, 'text-green-500': book.quantityInStock >= 5}">
+                                {{book.quantityInStock}} units
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">ISBN:</span>
+                            <span class="text-gray-600">{{book.isbn}}</span>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <!-- Book Information -->
+            <div class="md:col-span-2">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title class="text-xl">{{book.title}}</mat-card-title>
+                        <mat-card-subtitle>by {{book.author}}</mat-card-subtitle>
+                    </mat-card-header>
+
+                    <mat-card-content class="p-4">
+                        <div class="flex gap-4 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg">{{book.genre}}</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg">{{book.publisher}}</span>
+                        </div>
+
+                        <mat-divider></mat-divider>
+
+                        <h3 class="text-lg font-semibold mt-4 mb-2">Description</h3>
+                        <p class="text-gray-700 whitespace-pre-line">{{book.description}}</p>
+
+                        <mat-divider class="my-4"></mat-divider>
+
+                        <h3 class="text-lg font-semibold mb-2">Publication Details</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-500 text-sm">Publisher</p>
+                                <p>{{book.publisher}}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Genre</p>
+                                <p>{{book.genre}}</p>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

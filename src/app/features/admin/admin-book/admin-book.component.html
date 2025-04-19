@@ -1,0 +1,143 @@
+<div>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center max-w-screen-2xl mx-auto p-4">
+        <h2 class="text-2xl font-semibold mb-4 md:mb-0">Book Management</h2>
+
+        <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <!-- Search bar -->
+            <div class="w-full md:w-72">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Search books</mat-label>
+                    <input matInput type="text" #searchInput
+                           (keyup.enter)="onSearchChange(searchInput.value)"
+                           [value]="shopParams.search">
+                    <button mat-icon-button matSuffix
+                            (click)="onSearchChange(searchInput.value)"
+                            aria-label="Search">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+            <!-- Filter controls with uniform height -->
+            <div class="filter-controls-container">
+                <div class="flex items-center gap-2">
+                    <button mat-stroked-button
+                            [class.active-filter]="filterType === 'genre'"
+                            (click)="onFilterTypeChange('genre')">
+                        By Genre
+                    </button>
+                    <button mat-stroked-button
+                            [class.active-filter]="filterType === 'publisher'"
+                            (click)="onFilterTypeChange('publisher')">
+                        By Publisher
+                    </button>
+                </div>
+
+                <mat-form-field appearance="outline" class="w-full md:w-48 ml-2">
+                    <mat-label>{{filterType === 'genre' ? 'Genre' : 'Publisher'}}</mat-label>
+                    <mat-select [value]="filterType === 'genre' ? selectedGenre : selectedPublisher"
+                                (selectionChange)="onFilterSelect($event)">
+                        <mat-option value="All">All</mat-option>
+                        @if (filterType === 'genre') {
+                            @for (genre of genres; track $index) {
+                                <mat-option [value]="genre">{{genre}}</mat-option>
+                            }
+                        } @else {
+                            @for (publisher of publishers; track $index) {
+                                <mat-option [value]="publisher">{{publisher}}</mat-option>
+                            }
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <div class="flex justify-end mb-4">
+            <button mat-raised-button color="primary" routerLink="/admin/books/new">
+                <mat-icon>add</mat-icon> Add New Book
+            </button>
+        </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" class="bg-white w-full">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let book"> {{book.id}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="image">
+                    <th mat-header-cell *matHeaderCellDef> Image </th>
+                    <td mat-cell *matCellDef="let book" class="py-2">
+                        <img [src]="book.coverImageUrl"
+                             [alt]="book.title"
+                             class="h-16 w-12 object-cover rounded border border-gray-200"
+                             onerror="this.src='assets/images/placeholder.png'"
+                             (click)="showImagePreview(book.coverImageUrl, book.title)">
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> Title </th>
+                    <td mat-cell *matCellDef="let book"> {{book.title}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="author">
+                    <th mat-header-cell *matHeaderCellDef> Author </th>
+                    <td mat-cell *matCellDef="let book"> {{book.author}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef> Price </th>
+                    <td mat-cell *matCellDef="let book"> {{book.price | currency}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="genre">
+                    <th mat-header-cell *matHeaderCellDef> Genre </th>
+                    <td mat-cell *matCellDef="let book"> {{book.genre}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="publisher">
+                    <th mat-header-cell *matHeaderCellDef> Publisher </th>
+                    <td mat-cell *matCellDef="let book"> {{book.publisher}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="quantityInStock">
+                    <th mat-header-cell *matHeaderCellDef> Stock </th>
+                    <td mat-cell *matCellDef="let book"> {{book.quantityInStock}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let book">
+                        <div class="flex gap-2">
+                            <button matTooltip="View" mat-icon-button routerLink="/admin/books/{{book.id}}">
+                                <mat-icon color="accent">visibility</mat-icon>
+                            </button>
+                            <button matTooltip="Edit" mat-icon-button routerLink="/admin/books/edit/{{book.id}}">
+                                <mat-icon color="primary">edit</mat-icon>
+                            </button>
+                            <button matTooltip="Delete" mat-icon-button (click)="confirmBookDeletion(book.id)">
+                                <mat-icon color="warn">delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator
+                class="bg-white"
+                [pageSizeOptions]="[5, 10, 20]"
+                [length]="totalItems"
+                [pageSize]="shopParams.pageSize"
+                (page)="onPageChange($event)"
+                showFirstLastButtons
+            >
+            </mat-paginator>
+        </div>
+    </div>
+</div>

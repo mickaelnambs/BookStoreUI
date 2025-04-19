@@ -1,0 +1,26 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 py-12">
+    <div class="text-center max-w-lg">
+        <div class="mb-8">
+            <mat-icon class="text-blue-500" style="font-size: 100px; width: 100px; height: 100px;">
+                error_outline
+            </mat-icon>
+        </div>
+
+        <h1 class="text-6xl font-bold text-gray-900 mb-4">404</h1>
+        <h2 class="text-2xl font-semibold text-blue-600 mb-6">Page Not Found</h2>
+        <p class="text-gray-600 mb-8">
+            Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button mat-flat-button color="primary" class="px-6 py-3" routerLink="/">
+                <mat-icon class="mr-2">home</mat-icon>
+                Return Home
+            </button>
+            <button mat-stroked-button class="px-6 py-3" routerLink="/shop">
+                <mat-icon class="mr-2">library_books</mat-icon>
+                Browse Books
+            </button>
+        </div>
+    </div>
+</div>
