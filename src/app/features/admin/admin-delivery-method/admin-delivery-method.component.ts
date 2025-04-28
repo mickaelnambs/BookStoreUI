@@ -25,18 +25,25 @@ import { DialogService } from '../../../core/services/dialog.service';
         MatCardModule,
         MatSnackBarModule,
         RouterLink,
-        CurrencyPipe
+        CurrencyPipe,
     ],
     templateUrl: './admin-delivery-method.component.html',
-    styleUrl: './admin-delivery-method.component.scss'
+    styleUrl: './admin-delivery-method.component.scss',
 })
 export class AdminDeliveryMethodComponent implements OnInit {
     private adminService = inject(AdminService);
     private snackBar = inject(SnackbarService);
     private dialogService = inject(DialogService);
-    displayedColumns: string[] = ['id', 'shortName', 'deliveryTime', 'description', 'price', 'actions'];
+    displayedColumns: string[] = [
+        'id',
+        'shortName',
+        'deliveryTime',
+        'description',
+        'price',
+        'actions',
+    ];
     dataSource = new MatTableDataSource<DeliveryMethod>([]);
-    loading = false;
+    loading = false; // You can use @Defer in html to show a spinner while loading
 
     ngOnInit(): void {
         this.loadDeliveryMethods();
@@ -48,7 +55,7 @@ export class AdminDeliveryMethodComponent implements OnInit {
             next: (deliveryMethods) => {
                 this.dataSource.data = deliveryMethods;
                 this.loading = false;
-            }
+            },
         });
     }
 
@@ -60,9 +67,11 @@ export class AdminDeliveryMethodComponent implements OnInit {
         if (confirmed) {
             this.adminService.deleteDeliveryMethod(id).subscribe({
                 next: () => {
-                    this.snackBar.success('Delivery method deleted successfully');
+                    this.snackBar.success(
+                        'Delivery method deleted successfully'
+                    );
                     this.loadDeliveryMethods();
-                }
+                },
             });
         }
     }
