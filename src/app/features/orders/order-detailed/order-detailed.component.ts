@@ -18,12 +18,12 @@ import { AdminService } from '../../../core/services/admin.service';
         MatButton,
         DatePipe,
         CurrencyPipe,
-        RouterLink,
+        // RouterLink,
         AddressPipe,
-        PaymentCardPipe
+        PaymentCardPipe,
     ],
     templateUrl: './order-detailed.component.html',
-    styleUrl: './order-detailed.component.scss'
+    styleUrl: './order-detailed.component.scss',
 })
 export class OrderDetailedComponent implements OnInit {
     private orderService = inject(OrderService);
@@ -32,7 +32,9 @@ export class OrderDetailedComponent implements OnInit {
     private adminService = inject(AdminService);
     private router = inject(Router);
     order?: Order;
-    buttonText = this.accountService.isAdmin() ? 'Return to admin' : 'Return to orders';
+    buttonText = this.accountService.isAdmin()
+        ? 'Return to admin'
+        : 'Return to orders';
 
     ngOnInit(): void {
         this.loadOrder();
@@ -41,7 +43,7 @@ export class OrderDetailedComponent implements OnInit {
     onReturnClick() {
         this.accountService.isAdmin()
             ? this.router.navigateByUrl('/admin')
-            : this.router.navigateByUrl('/orders')
+            : this.router.navigateByUrl('/orders');
     }
 
     loadOrder() {
@@ -52,7 +54,7 @@ export class OrderDetailedComponent implements OnInit {
             : this.orderService.getOrderDetailed(+id);
 
         loadOrderData.subscribe({
-            next: order => this.order = order
-        })
+            next: (order) => (this.order = order),
+        });
     }
 }
